@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <!-- Fondo crema neutro -->
+  <rect width="1920" height="1080" fill="#F4F4F9"/>
+
+  <!-- CAPA 1: Formas grandes de fondo que desbordan el canvas -->
+
+  <!-- Gran sector circular púrpura (esquina superior izquierda, desbordante) -->
+  <path d="M -200 -100 
+           C 100 -50, 400 200, 350 500 
+           C 300 750, 50 600, -100 700 
+           L -200 700 Z" 
+        fill="#48107E" opacity="0.88"/>
+
+  <!-- Pill horizontal naranja vibrante (parte superior, cruza todo el ancho) -->
+  <path d="M 600 -80 
+           C 650 -80, 1400 -60, 1500 40 
+           C 1600 140, 1580 260, 1400 280 
+           C 1200 300, 700 220, 580 160 
+           C 460 100, 550 -80, 600 -80 Z" 
+        fill="#FF4500" opacity="0.87"/>
+
+  <!-- Enorme blob azul real (derecha, desborda) -->
+  <path d="M 1500 100 
+           C 1750 50, 2100 200, 2050 450 
+           C 2000 700, 1800 800, 1600 750 
+           C 1400 700, 1350 500, 1380 350 
+           C 1410 200, 1300 150, 1500 100 Z" 
+        fill="#2E5BFF" opacity="0.85"/>
+
+  <!-- CAPA 2: Formas medianas superpuestas -->
+
+  <!-- Sector circular verde neón (centro-izquierda) -->
+  <path d="M 200 300 
+           C 350 250, 550 300, 600 480 
+           C 650 660, 500 800, 350 780 
+           C 200 760, 100 600, 120 450 
+           C 140 300, 100 350, 200 300 Z" 
+        fill="#ADFF2F" opacity="0.87"/>
+
+  <!-- Pill diagonal durazno (centro de la composición) -->
+  <path d="M 700 350 
+           C 780 300, 950 280, 1100 360 
+           C 1250 440, 1280 580, 1200 650 
+           C 1120 720, 940 700, 800 620 
+           C 660 540, 620 400, 700 350 Z" 
+        fill="#FFA07A" opacity="0.88"/>
+
+  <!-- Arco púrpura medio (centro-superior) -->
+  <path d="M 850 50 
+           C 900 20, 1050 30, 1100 120 
+           C 1150 210, 1100 350, 1000 380 
+           C 900 410, 820 300, 830 200 
+           C 840 100, 800 80, 850 50 Z" 
+        fill="#48107E" opacity="0.85"/>
+
+  <!-- CAPA 3: Formas que cruzan y entrelazan -->
+
+  <!-- Gran pill verde neón (horizontal inferior, desborda derecha) -->
+  <path d="M 900 700 
+           C 1000 650, 1300 660, 1500 720 
+           C 1700 780, 1950 850, 2000 950 
+           C 2050 1050, 1900 1120, 1700 1100 
+           C 1500 1080, 1100 980, 950 900 
+           C 800 820, 800 750, 900 700 Z" 
+        fill="#ADFF2F" opacity="0.86"/>
+
+  <!-- Sector circular naranja (inferior izquierda, desborda) -->
+  <path d="M -50 800 
+           C 100 700, 350 680, 450 780 
+           C 550 880, 500 1050, 350 1120 
+           C 200 1190, 0 1150, -80 1050 
+           L -100 900 Z" 
+        fill="#FF4500" opacity="0.88"/>
+
+  <!-- Pill azul real diagonal (centro-derecha) -->
+  <path d="M 1200 400 
+           C 1280 370, 1400 380, 1450 450 
+           C 1500 520, 1480 620, 1400 660 
+           C 1320 700, 1220 650, 1180 580 
+           C 1140 510, 1120 430, 1200 400 Z" 
+        fill="#2E5BFF" opacity="0.87"/>
+
+  <!-- CAPA 4: Acentos y formas pequeñas para profundidad -->
+
+  <!-- Pill durazno flotante (superior derecha) -->
+  <path d="M 1350 80 
+           C 1400 50, 1500 60, 1530 130 
+           C 1560 200, 1510 280, 1440 290 
+           C 1370 300, 1310 240, 1300 180 
+           C 1290 120, 1300 110, 1350 80 Z" 
+        fill="#FFA07A" opacity="0.90"/>
+
+  <!-- Círculo púrpura pequeño (inferior centro) -->
+  <circle cx="750" cy="900" r="100" fill="#48107E" opacity="0.85"/>
+
+  <!-- Pill azul real pequeña (izquierda media) -->
+  <path d="M 80 450 
+           C 120 420, 220 430, 240 490 
+           C 260 550, 210 610, 150 620 
+           C 90 630, 40 580, 40 520 
+           C 40 460, 40 480, 80 450 Z" 
+        fill="#2E5BFF" opacity="0.88"/>
+
+  <!-- Medio arco verde neón (esquina superior derecha) -->
+  <path d="M 1700 -30 
+           C 1780 -10, 1850 80, 1840 180 
+           C 1830 280, 1760 320, 1690 290 
+           C 1620 260, 1600 170, 1620 100 
+           C 1640 30, 1620 -50, 1700 -30 Z" 
+        fill="#ADFF2F" opacity="0.86"/>
+
+  <!-- Pill naranja pequeña (inferior derecha) -->
+  <path d="M 1300 900 
+           C 1360 870, 1450 880, 1480 940 
+           C 1510 1000, 1470 1060, 1400 1080 
+           C 1330 1100, 1270 1060, 1260 1000 
+           C 1250 940, 1240 930, 1300 900 Z" 
+        fill="#FF4500" opacity="0.87"/>
+
+  <!-- Semicírculo durazno desbordante (inferior, centro) -->
+  <path d="M 500 1000 
+           C 580 950, 700 960, 750 1030 
+           C 800 1100, 760 1180, 680 1200 
+           C 600 1220, 480 1160, 460 1080 
+           C 440 1000, 420 1050, 500 1000 Z" 
+        fill="#FFA07A" opacity="0.85"/>
+</svg>

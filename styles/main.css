@@ -1,0 +1,329 @@
+:root {
+  --bg-main: #0D1117;
+  --bg-card: #161B22;
+  --text-primary: #FFFFFF;
+  --text-secondary: #8B949E;
+  --accent-neon: #00FF87;
+  --accent-purple: #8A2BE2;
+  --font-main: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  /* Fondo SVG estilo We Are 26 con overlay oscuro para legibilidad */
+  background-image: linear-gradient(rgba(13, 17, 23, 0.55), rgba(13, 17, 23, 0.65)), url('../IMAGES/wc26-background.svg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+/* 2. Adaptación del Glassmorphism al Dark Mode */
+.apple-glass {
+  background: rgba(13, 17, 23, 0.4);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.apple-card {
+  /* Más transparente para aprovechar el fondo vivo, con un desenfoque (blur) más fuerte */
+  background: rgba(22, 27, 34, 0.45);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* 3. Integración de Assets */
+/* Hero Header con overlay oscuro */
+.hero-header {
+  background-image: linear-gradient(rgba(13, 17, 23, 0.8), rgba(13, 17, 23, 1)), url('../IMAGES/istockphoto-2153564669-612x612.jpg');
+  background-size: cover;
+  background-position: center;
+  border-radius: 20px;
+}
+
+/* Fondo genérico / respaldo */
+.bg-canvas {
+  background-image: url('../IMAGES/canvas.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* Plantilla oculta para Exportación */
+.export-template {
+  display: none;
+  background-image: url('../IMAGES/istockphoto-2268418024-612x612.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+/* Logo en Navbar */
+.nav-logo {
+  max-height: 48px;
+}
+
+/* 4. Micro-interacciones de Inputs y Botones */
+.apple-input {
+  background-color: #161B22;
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.apple-input:focus {
+  outline: none;
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+}
+
+.apple-input::placeholder {
+  color: var(--text-secondary);
+}
+
+/* Botones principales y de votos */
+.apple-btn {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.vote-btn {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.apple-btn:hover, .vote-btn:hover {
+  background-color: var(--accent-neon);
+  color: #000000;
+  border-color: var(--accent-neon);
+  box-shadow: 0 0 15px rgba(0, 255, 135, 0.4);
+}
+
+.apple-btn:active, .vote-btn:active {
+  transform: scale(0.95);
+}
+
+/* ==========================================
+   BRACKET STYLES
+   ========================================== */
+
+.bracket-wrapper {
+  display: flex;
+  gap: 0; /* El gap lo manejamos con los conectores */
+  align-items: stretch;
+  min-height: 640px;
+}
+
+/* Columna de ronda */
+.bracket-column {
+  display: flex;
+  flex-direction: column;
+  width: 170px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Espaciador entre columnas (actúa como el "conector" horizontal) */
+.bracket-spacer {
+  width: 2.5rem;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Cada par de partidos que alimenta al siguiente partido */
+.bracket-pair {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
+}
+
+/* Línea vertical en el lado DERECHO del par (une los centros de los 2 matches) */
+.bracket-pair::after {
+  content: '';
+  position: absolute;
+  right: -2.5rem; /* Llega hasta el centro del spacer */
+  top: 25%;
+  height: 50%;
+  border-right: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Cada recuadro de partido dentro del par */
+.bracket-match-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  position: relative;
+  min-height: 56px;
+  padding: 4px 0;
+}
+
+/* Línea horizontal SALIENTE: del match hacia el lado derecho (hasta el borde vertical del par) */
+.bracket-pair .bracket-match-wrapper::after {
+  content: '';
+  position: absolute;
+  right: -2.5rem;
+  top: 50%;
+  width: 1.25rem; /* Solo llega hasta la mitad del spacer, donde está el borde vertical */
+  border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Línea horizontal ENTRANTE: del centro del spacer hacia el match en la nueva columna */
+.bracket-match-wrapper.has-incoming::before {
+  content: '';
+  position: absolute;
+  left: -1.25rem; /* La mitad del spacer */
+  top: 50%;
+  width: 1.25rem;
+  border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Partidos de la columna final (sin línea saliente) */
+.bracket-column-final .bracket-match-wrapper::after {
+  display: none;
+}
+
+/* Partidos TBD (sin línea entrante) */
+.bracket-match-wrapper-empty::before {
+  display: none !important;
+}
+
+/* Tarjeta visual del partido */
+.bracket-match {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  position: relative;
+  z-index: 2;
+  transition: all 0.2s;
+  cursor: pointer;
+  width: 100%;
+}
+
+.bracket-match:hover {
+  border-color: var(--accent-neon);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,255,135,0.2);
+}
+
+/* Fila de equipo dentro del partido */
+.bracket-team {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.bracket-team:last-child {
+  border-bottom: none;
+}
+
+.bracket-team.winner {
+  color: var(--accent-neon);
+  font-weight: 700;
+}
+
+
+/* ==========================================
+   MEDIA SLIDER STYLES
+   ========================================== */
+
+/* Track que desliza horizontalmente */
+#slider-track {
+  display: flex;
+  height: 100%;
+  will-change: transform;
+}
+
+/* Cada slide ocupa el 100% del contenedor */
+.slide-item {
+  min-width: 100%;
+  height: 100%;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.slide-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 0.6s ease;
+}
+
+.slide-item:hover img {
+  transform: scale(1.03);
+}
+
+/* Dots de navegación */
+.slider-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: rgba(255,255,255,0.25);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.slider-dot.active {
+  background: #00FF87;
+  width: 24px;
+  box-shadow: 0 0 8px rgba(0,255,135,0.6);
+}
+
+/* Miniaturas */
+.slider-thumb {
+  flex-shrink: 0;
+  width: 72px;
+  height: 52px;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  opacity: 0.5;
+}
+
+.slider-thumb:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+
+.slider-thumb.active {
+  border-color: #00FF87;
+  opacity: 1;
+  box-shadow: 0 0 12px rgba(0,255,135,0.4);
+}
+
+.slider-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

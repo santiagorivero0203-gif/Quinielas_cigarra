@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Reglamento Oficial | Liga Cigarra</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;family=JetBrains+Mono:wght@500;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#1b1b1e",
+                    "primary-container": "#2aff7f",
+                    "error-container": "#93000a",
+                    "surface-variant": "#353438",
+                    "on-secondary-fixed": "#002022",
+                    "on-primary-fixed-variant": "#005323",
+                    "surface-container-high": "#2a2a2d",
+                    "surface-bright": "#39393c",
+                    "secondary-fixed": "#7df4ff",
+                    "on-primary-container": "#007233",
+                    "on-error-container": "#ffdad6",
+                    "on-secondary-container": "#00686f",
+                    "on-secondary": "#00363a",
+                    "surface-container-lowest": "#0e0e11",
+                    "on-surface-variant": "#bacbb8",
+                    "tertiary-fixed": "#e4e1e7",
+                    "tertiary-container": "#e1dee4",
+                    "surface-container": "#1f1f22",
+                    "surface-container-highest": "#353438",
+                    "secondary-fixed-dim": "#00dbe9",
+                    "primary-fixed-dim": "#00e46d",
+                    "inverse-on-surface": "#303033",
+                    "on-surface": "#e4e1e6",
+                    "secondary": "#d3fbff",
+                    "surface": "#131316",
+                    "secondary-container": "#00eefc",
+                    "tertiary-fixed-dim": "#c8c5cb",
+                    "on-background": "#e4e1e6",
+                    "on-tertiary": "#303034",
+                    "surface-dim": "#131316",
+                    "error": "#ffb4ab",
+                    "outline": "#849584",
+                    "outline-variant": "#3b4b3c",
+                    "inverse-surface": "#e4e1e6",
+                    "inverse-primary": "#006d31",
+                    "surface-tint": "#00e46d",
+                    "on-secondary-fixed-variant": "#004f54",
+                    "on-tertiary-container": "#636266",
+                    "on-primary-fixed": "#00210a",
+                    "primary": "#f2ffef",
+                    "on-error": "#690005",
+                    "on-tertiary-fixed": "#1b1b1f",
+                    "on-tertiary-fixed-variant": "#47464b",
+                    "on-primary": "#003916",
+                    "background": "#131316",
+                    "tertiary": "#fefbff",
+                    "primary-fixed": "#65ff90"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "20px",
+                    "base": "4px",
+                    "xl": "64px",
+                    "sm": "16px",
+                    "lg": "40px",
+                    "gutter": "16px",
+                    "md": "24px",
+                    "xs": "8px",
+                    "margin-desktop": "120px"
+            },
+            "fontFamily": {
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "label-md": ["JetBrains Mono"],
+                    "label-sm": ["JetBrains Mono"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(26, 26, 30, 0.6);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neon-glow {
+            text-shadow: 0 0 10px rgba(42, 255, 127, 0.5);
+        }
+        .active-scale:active {
+            transform: scale(0.95);
+            transition: transform 0.15s ease-in-out;
+        }
+        body {
+            background-color: #0F0F12;
+            color: #e4e1e6;
+        }
+        .bg-radial-gradient {
+            background: radial-gradient(circle at 50% -20%, rgba(42, 255, 127, 0.15) 0%, rgba(15, 15, 18, 0) 60%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md bg-radial-gradient min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/60 dark:bg-surface/60 backdrop-blur-xl border-b border-white/10 shadow-xl flex items-center justify-between px-margin-mobile py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container cursor-pointer active:scale-95 transition-transform" data-icon="arrow_back">arrow_back</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-extrabold text-primary-container tracking-tighter">Liga Cigarra</h1>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="info">info</span>
+</header>
+<main class="mt-20 px-margin-mobile">
+<!-- Hero Section -->
+<div class="py-8">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">Reglamento Oficial</h2>
+<p class="font-body-md text-on-surface-variant">Normativas y puntajes para la temporada 2026 de la Liga Cigarra.</p>
+</div>
+<!-- 1. Scoring System -->
+<section class="mb-8">
+<div class="glass-card rounded-xl p-md">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary-container" data-icon="scoreboard" style="font-variation-settings: 'FILL' 1;">scoreboard</span>
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface !text-lg">Sistema de Puntuación</h3>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-sm glass-card rounded-lg border-white/5 active-scale">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="timer">timer</span>
+<span class="font-body-md">Tiempo Regular</span>
+</div>
+<span class="font-label-md text-primary-container font-bold neon-glow">1 PT</span>
+</div>
+<div class="flex items-center justify-between p-sm glass-card rounded-lg border-white/5 active-scale">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="more_time">more_time</span>
+<span class="font-body-md">Prórroga</span>
+</div>
+<span class="font-label-md text-primary-container font-bold neon-glow">2 PTS</span>
+</div>
+<div class="flex items-center justify-between p-sm glass-card rounded-lg border-white/5 active-scale">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="sports_soccer">sports_soccer</span>
+<span class="font-body-md">Penales</span>
+</div>
+<span class="font-label-md text-primary-container font-bold neon-glow">3 PTS</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. 'El Muletto' Rule -->
+<section class="mb-8">
+<div class="glass-card rounded-xl p-md border-l-4 border-primary-container">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="gavel" style="font-variation-settings: 'FILL' 1;">gavel</span>
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface !text-lg">Regla 'El Muletto'</h3>
+</div>
+<p class="font-body-md text-on-surface leading-relaxed">
+                    No se permiten cambios una vez enviado el voto. La precisión es clave antes de confirmar tu quiniela.
+                </p>
+<div class="mt-4 flex items-center gap-2 text-primary-container/70 text-sm">
+<span class="material-symbols-outlined text-sm" data-icon="warning">warning</span>
+<span class="font-label-sm">Inflexible / Sin excepciones</span>
+</div>
+</div>
+</section>
+<!-- 3. Ventana de Votación -->
+<section class="mb-8">
+<div class="glass-card rounded-xl p-md flex items-center gap-4 active-scale overflow-hidden relative">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary-container/5 rounded-full blur-2xl"></div>
+<div class="flex-shrink-0 w-16 h-16 rounded-full bg-primary-container/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container text-3xl" data-icon="schedule" style="font-variation-settings: 'FILL' 1;">schedule</span>
+</div>
+<div>
+<h3 class="font-label-md text-primary-container mb-1">Ventana de Votación</h3>
+<p class="font-body-md text-on-surface">30 minutos disponibles todos los <span class="font-bold text-primary-fixed-dim">miércoles</span> para configurar tus opciones.</p>
+</div>
+</div>
+</section>
+<!-- 4. El Premio Mayor -->
+<section class="mb-8">
+<div class="relative rounded-xl overflow-hidden glass-card p-0">
+<div class="h-32 bg-cover bg-center" data-alt="A cinematic night scene of a luxurious football stadium lounge with dark glass surfaces and vibrant neon green accents. Sophisticated modern lighting illuminates a celebratory gathering of digital professionals, creating a high-stakes VIP winner's atmosphere. The aesthetic is deep charcoal and minimalist elegance." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuByAH3q7PI_7TV32DpvraO7bOdQfAUYopvFTrqSaBeghsR6Hu-F5znA0QCZQwLlJrdwnGjfC6hgpKQHKi6OT76URtPt2_q7ElKmbubVx5rRzxrn3V1O0nsFZPIq2NsQY-pZn8S_Nlxf9LY9C0PWUEBSQwwNXqfxI-zhCWiIUG7sRbjGLI7vFi_jF5K2Q1p7_5iDGIKYU3IfYAetJoWl1F_R_oaiq2uuNdNHe7mLvEAFhEbVHIX2h6ENcFJneDOY_mW2RhoWOPWxp-w')">
+<div class="w-full h-full bg-gradient-to-t from-surface via-surface/40 to-transparent"></div>
+</div>
+<div class="p-md -mt-8 relative z-10">
+<div class="inline-flex items-center gap-2 bg-primary-container text-on-primary-container px-3 py-1 rounded-full mb-3 shadow-lg shadow-primary-container/20">
+<span class="material-symbols-outlined text-sm" data-icon="emoji_events" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+<span class="font-label-sm font-bold">RECOMPENSA FINAL</span>
+</div>
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">El Premio Mayor</h3>
+<p class="font-body-md text-on-surface-variant mb-4">
+                        El ganador final de la temporada obtiene el derecho absoluto de elegir la próxima salida, celebración o evento grupal de la Liga.
+                    </p>
+<button class="w-full bg-primary-container text-on-primary-fixed font-bold py-3 rounded-lg active-scale transition-all flex items-center justify-center gap-2">
+<span class="font-label-md">VER HISTÓRICO DE PREMIOS</span>
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Visual Token Footer -->
+<div class="flex justify-center items-center gap-8 py-8 opacity-40">
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-2xl" data-icon="verified_user">verified_user</span>
+<span class="font-label-sm">Integridad</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-2xl" data-icon="bolt">bolt</span>
+<span class="font-label-sm">Velocidad</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-2xl" data-icon="groups">groups</span>
+<span class="font-label-sm">Comunidad</span>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container/80 dark:bg-surface-container/80 backdrop-blur-2xl border-t border-white/5 rounded-t-xl shadow-[0_-8px_32px_rgba(0,0,0,0.5)] flex justify-around items-center h-20 px-2 pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-fixed-dim transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="sports_soccer">sports_soccer</span>
+<span class="font-label-sm text-label-sm">Predicciones</span>
+</a>
+<!-- ACTIVE TAB: Reglas -->
+<a class="flex flex-col items-center justify-center bg-primary-container/20 text-primary-container rounded-xl px-4 py-1 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="gavel" style="font-variation-settings: 'FILL' 1;">gavel</span>
+<span class="font-label-sm text-label-sm">Reglas</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-fixed-dim transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-label-sm text-label-sm">Posiciones</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-fixed-dim transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">Perfil</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for ripple effect or card focus
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.style.borderColor = 'rgba(42, 255, 127, 0.3)';
+            });
+            card.addEventListener('touchend', () => {
+                card.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+            });
+        });
+    </script>
+</body></html>
