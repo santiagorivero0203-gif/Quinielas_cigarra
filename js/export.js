@@ -35,14 +35,35 @@ export function exportVotaciones(data) {
         return;
     }
 
-    const excelData = data.map((row) => {
-        return {
-            "Participante": row.perfiles?.nombre || "Desconocido",
-            "Partido": `${row.partidos?.equipo_local} vs ${row.partidos?.equipo_visitante}`,
-            "Predicción Ganador": row.prediccion_ganador,
-            "Forma de Victoria": row.prediccion_forma_victoria
-        };
+    // 1. Obtener lista única de partidos para usarlos como columnas
+    const partidosSet = new Set();
+    data.forEach(row => {
+        if (row.partidos) {
+            partidosSet.add(`${row.partidos.equipo_local} vs ${row.partidos.equipo_visitante}`);
+        }
     });
+    // Array con los nombres de los partidos en orden
+    const partidosColumnas = Array.from(partidosSet);
+
+    // 2. Agrupar las predicciones por participante
+    const participantes = {};
+    data.forEach(row => {
+        const nombre = row.perfiles?.nombre || "Desconocido";
+        
+        if (!participantes[nombre]) {
+            participantes[nombre] = { "Participante": nombre };
+            // Inicializar las columnas de partidos en blanco para mantener el orden
+            partidosColumnas.forEach(p => participantes[nombre][p] = "");
+        }
+
+        if (row.partidos) {
+            const partidoNombre = `${row.partidos.equipo_local} vs ${row.partidos.equipo_visitante}`;
+            participantes[nombre][partidoNombre] = row.prediccion_ganador;
+        }
+    });
+
+    // 3. Convertir el objeto agrupado en un array para Excel
+    const excelData = Object.values(participantes);
 
     const worksheet = window.XLSX.utils.json_to_sheet(excelData);
     const workbook = window.XLSX.utils.book_new();
