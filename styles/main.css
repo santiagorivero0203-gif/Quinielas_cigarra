@@ -12,12 +12,36 @@ body {
   font-family: var(--font-main);
   background-color: var(--bg-main);
   color: var(--text-primary);
-  /* Fondo SVG estilo We Are 26 con overlay oscuro para legibilidad */
+  /* Fondo SVG con overlay oscuro para legibilidad */
   background-image: linear-gradient(rgba(13, 17, 23, 0.55), rgba(13, 17, 23, 0.65)), url('../IMAGES/wc26-background.svg');
-  background-size: cover;
+  /* Usamos un tamaño mayor a cover para tener espacio para hacer "panning" */
+  background-size: 150%;
   background-position: center;
   background-attachment: fixed;
   background-repeat: no-repeat;
+  transition: background-position 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Clases dinámicas para mover el fondo según la pestaña */
+body.bg-pos-partidos { background-position: 0% 0%; }
+body.bg-pos-bracket { background-position: 100% 0%; }
+body.bg-pos-leaderboard { background-position: 0% 100%; }
+body.bg-pos-media { background-position: 100% 100%; }
+
+/* Animación fluida para la aparición de las secciones */
+.section-enter {
+  animation: fadeSlideUp 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* 2. Adaptación del Glassmorphism al Dark Mode */

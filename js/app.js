@@ -1,6 +1,6 @@
 import supabase from './supabase.js';
 import { initAuth } from './auth.js';
-import { exportLeaderboard } from './export.js';
+import { exportLeaderboard, exportVotaciones } from './export.js';
 
 /**
  * App principal de Quinielas Liga Cigarra.
@@ -12,7 +12,7 @@ let leaderboardData = [];
 let allPartidos = [];
 let userPredictions = {}; // Ahora guardará un objeto con { ganador, forma }
 
-// Diccionario de Banderas y Nombres en Español (32 equipos)
+// Diccionario de Banderas y Nombres en Español (todos los equipos del torneo)
 const countriesInfo = {
     'Argentina': { flag: '🇦🇷', es: 'Argentina' },
     'Egypt': { flag: '🇪🇬', es: 'Egipto' },
@@ -31,7 +31,8 @@ const countriesInfo = {
     'Germany': { flag: '🇩🇪', es: 'Alemania' },
     'Netherlands': { flag: '🇳🇱', es: 'Países Bajos' },
     'Croatia': { flag: '🇭🇷', es: 'Croacia' },
-    'USA': { flag: '🇺🇸', es: 'EE.UU.' },
+    'Italy': { flag: '🇮🇹', es: 'Italia' },
+    'USA': { flag: '🇺🇸', es: 'Estados Unidos' },
     'Mexico': { flag: '🇲🇽', es: 'México' },
     'Ecuador': { flag: '🇪🇨', es: 'Ecuador' },
     'Sweden': { flag: '🇸🇪', es: 'Suecia' },
@@ -39,23 +40,34 @@ const countriesInfo = {
     'Canada': { flag: '🇨🇦', es: 'Canadá' },
     'Austria': { flag: '🇦🇹', es: 'Austria' },
     'Bosnia': { flag: '🇧🇦', es: 'Bosnia' },
+    'Bosnia and Herzegovina': { flag: '🇧🇦', es: 'Bosnia y Herz.' },
     'Senegal': { flag: '🇸🇳', es: 'Senegal' },
     'Cote d\'Ivoire': { flag: '🇨🇮', es: 'Costa de Marfil' },
+    'Ivory Coast': { flag: '🇨🇮', es: 'Costa de Marfil' },
     'DR Congo': { flag: '🇨🇩', es: 'RD Congo' },
     'Cape Verde': { flag: '🇨🇻', es: 'Cabo Verde' },
     'Australia': { flag: '🇦🇺', es: 'Australia' },
     'Algeria': { flag: '🇩🇿', es: 'Argelia' },
-    'Ghana': { flag: '🇬🇭', es: 'Ghana' }
+    'Ghana': { flag: '🇬🇭', es: 'Ghana' },
+    // Placeholders para rondas futuras (Semifinales y Final)
+    'W97': { flag: '🏳️', es: 'Gan. CF1' },
+    'W98': { flag: '🏳️', es: 'Gan. CF2' },
+    'W99': { flag: '🏳️', es: 'Gan. CF3' },
+    'W100': { flag: '🏳️', es: 'Gan. CF4' },
+    'W101': { flag: '🏳️', es: 'Gan. SF1' },
+    'W102': { flag: '🏳️', es: 'Gan. SF2' },
+    'L101': { flag: '🏳️', es: 'Perd. SF1' },
+    'L102': { flag: '🏳️', es: 'Perd. SF2' },
 };
 
-function getCountry(countryName) {
-    return countriesInfo[countryName] || { flag: '🏳️', es: countryName };
+function getCountry(name) {
+    return countriesInfo[name] || { flag: '🏳️', es: name };
 }
 
 function getFormaVictoriaText(forma) {
-    if (forma === 'regular') return '90 Minutos';
-    if (forma === 'prorroga') return 'Prórroga';
-    if (forma === 'penales') return 'Penales';
+    if(forma === 'regular') return '90m';
+    if(forma === 'prorroga') return 'Prórroga';
+    if(forma === 'penales') return 'Penales';
     return forma;
 }
 
@@ -87,8 +99,26 @@ document.addEventListener('DOMContentLoaded', () => {
         initSlider();
     });
 
-    btnExport.addEventListener('click', () => {
-        exportLeaderboard(leaderboardData);
+    btnExport.addEventListener('click', async () => {
+        btnExport.textContent = "Generando...";
+        
+        // Obtenemos todas las predicciones de Supabase con un JOIN
+        const { data, error } = await supabase
+            .from('predicciones')
+            .select(`
+                prediccion_ganador,
+                prediccion_forma_victoria,
+                perfiles (nombre),
+                partidos (equipo_local, equipo_visitante)
+            `);
+            
+        if (error) {
+            alert("Error al obtener votaciones: " + error.message);
+        } else {
+            exportVotaciones(data);
+        }
+        
+        btnExport.textContent = "⬇ Exportar Votaciones";
     });
 
     function switchTab(tab) {
@@ -99,20 +129,35 @@ document.addEventListener('DOMContentLoaded', () => {
             t.classList.remove('text-[#00FF87]', 'border-[#00FF87]', 'border-b-2', 'shadow-[0_4px_10px_rgba(0,255,135,0.2)]');
             t.classList.add('text-[#8B949E]');
         });
-        allSections.forEach(s => s.classList.add('hidden'));
+        
+        allSections.forEach(s => {
+            s.classList.add('hidden');
+            s.classList.remove('section-enter'); // Reiniciamos animación
+        });
+
+        // Limpiar clases de fondo del body
+        document.body.classList.remove('bg-pos-partidos', 'bg-pos-bracket', 'bg-pos-leaderboard', 'bg-pos-media');
 
         const tabMap = {
-            'partidos':    { tab: tabPartidos,    section: sectionPartidos    },
-            'bracket':     { tab: tabBracket,     section: sectionBracket     },
-            'leaderboard': { tab: tabLeaderboard, section: sectionLeaderboard },
-            'media':       { tab: tabMedia,       section: sectionMedia       },
+            'partidos':    { tab: tabPartidos,    section: sectionPartidos,    bgClass: 'bg-pos-partidos' },
+            'bracket':     { tab: tabBracket,     section: sectionBracket,     bgClass: 'bg-pos-bracket' },
+            'leaderboard': { tab: tabLeaderboard, section: sectionLeaderboard, bgClass: 'bg-pos-leaderboard' },
+            'media':       { tab: tabMedia,       section: sectionMedia,       bgClass: 'bg-pos-media' },
         };
 
         const selected = tabMap[tab];
         if (!selected) return;
+        
         selected.section.classList.remove('hidden');
+        // Forzar reflow para que la animación se reproduzca cada vez
+        void selected.section.offsetWidth;
+        selected.section.classList.add('section-enter');
+        
         selected.tab.classList.add('text-[#00FF87]', 'border-[#00FF87]', 'border-b-2', 'shadow-[0_4px_10px_rgba(0,255,135,0.2)]');
         selected.tab.classList.remove('text-[#8B949E]');
+
+        // Cambiar el fondo dinámicamente
+        document.body.classList.add(selected.bgClass);
 
         if (tab === 'bracket') renderBracket(allPartidos, userPredictions);
     }
@@ -291,54 +336,52 @@ document.addEventListener('DOMContentLoaded', () => {
             card.innerHTML = `
                 <div class="flex justify-between items-center text-sm border-b border-white/10 pb-3">
                     <span class="text-[#8B949E] font-medium">${new Date(p.fecha_inicio).toLocaleDateString()}</span>
-                    <span class="px-2.5 py-1 rounded-md text-[11px] font-bold tracking-wide uppercase ${isPending ? 'bg-[#8A2BE2]/20 text-[#8A2BE2] border border-[#8A2BE2]/50' : 'bg-white/10 text-[#8B949E]'}">
+                    <span class="px-2.5 py-1 rounded-md text-[10px] md:text-[11px] font-bold tracking-wide uppercase ${isPending ? 'bg-[#8A2BE2]/20 text-[#8A2BE2] border border-[#8A2BE2]/50' : 'bg-white/10 text-[#8B949E]'}">
                         ${isPending ? 'Por Iniciar' : 'Finalizado'}
                     </span>
                 </div>
-                <div class="flex justify-between items-center mt-1">
-                    <div class="text-center w-5/12">
-                        <p class="font-semibold text-lg md:text-xl tracking-tight text-white truncate" title="${localInfo.es}">${localInfo.flag} ${localInfo.es}</p>
+                
+                <!-- Layout responsivo para tarjetas PENDIENTES -->
+                <div class="flex justify-between items-center mt-2">
+                    <div class="flex-1 min-w-0 text-center md:text-right pr-2">
+                        <p class="font-bold text-sm md:text-lg tracking-tight text-white truncate" title="${localInfo.es}">${localInfo.flag} ${localInfo.es}</p>
                     </div>
-                    <div class="w-2/12 text-center flex flex-col items-center">
+                    <div class="w-12 flex-shrink-0 text-center flex flex-col items-center justify-center">
                         ${!isPending && p.goles_local != null ? `
-                            <span class="text-white font-black text-2xl tracking-tighter">${p.goles_local} <span class="text-[#8B949E]">-</span> ${p.goles_visitante}</span>
-                            <span class="text-[10px] text-[#8B949E] mt-0.5 uppercase tracking-widest">${getFormaVictoriaText(p.forma_victoria)}</span>
-                        ` : `<span class="text-[#8B949E] font-semibold text-sm">VS</span>`}
+                            <span class="text-white font-black text-xl md:text-2xl tracking-tighter">${p.goles_local} <span class="text-[#8B949E] text-sm md:text-base">-</span> ${p.goles_visitante}</span>
+                        ` : `<span class="text-[#8B949E] font-semibold text-xs md:text-sm">VS</span>`}
                     </div>
-                    <div class="text-center w-5/12">
-                        <p class="font-semibold text-lg md:text-xl tracking-tight text-white truncate" title="${visitInfo.es}">${visitInfo.flag} ${visitInfo.es}</p>
+                    <div class="flex-1 min-w-0 text-center md:text-left pl-2">
+                        <p class="font-bold text-sm md:text-lg tracking-tight text-white truncate" title="${visitInfo.es}">${visitInfo.flag} ${visitInfo.es}</p>
                     </div>
                 </div>
                 
                 ${isPending ? `
-                    <div class="mt-2" id="vote-container-${p.id}">
+                    <div class="mt-4" id="vote-container-${p.id}">
                         ${pred ? `
-                            <div class="bg-[#00FF87]/10 text-[#00FF87] border border-[#00FF87]/30 p-3 rounded-xl text-center text-sm shadow-[0_0_15px_rgba(0,255,135,0.1)]">
+                            <div class="bg-[#00FF87]/10 text-[#00FF87] border border-[#00FF87]/30 p-3 rounded-xl text-center text-xs md:text-sm shadow-[0_0_15px_rgba(0,255,135,0.1)]">
                                 Tu voto: <span class="font-bold text-white">${getCountry(pred.ganador).es}</span> en <span class="font-bold">${getFormaVictoriaText(pred.forma)}</span>
-                                <p class="text-[#8B949E] text-xs mt-1">(Ley del Muletto: Bloqueado)</p>
+                                <p class="text-[#8B949E] text-[10px] mt-1">(Ley del Muletto: Bloqueado)</p>
                             </div>
                         ` : `
-                            <p class="text-xs text-[#8B949E] text-center mb-3 font-medium">Elige al ganador de este encuentro</p>
+                            <p class="text-[11px] md:text-xs text-[#8B949E] text-center mb-3 font-medium">Elige al ganador de este encuentro</p>
                             <div class="flex gap-2">
-                                <button onclick="window.elegirGanador(${p.id}, '${p.equipo_local}')" class="vote-btn flex-1 truncate">${localInfo.es}</button>
-                                <button onclick="window.elegirGanador(${p.id}, '${p.equipo_visitante}')" class="vote-btn flex-1 truncate">${visitInfo.es}</button>
+                                <button onclick="window.elegirGanador(${p.id}, '${p.equipo_local}')" class="vote-btn flex-1 truncate text-xs md:text-sm py-2 px-1">${localInfo.es}</button>
+                                <button onclick="window.elegirGanador(${p.id}, '${p.equipo_visitante}')" class="vote-btn flex-1 truncate text-xs md:text-sm py-2 px-1">${visitInfo.es}</button>
                             </div>
                         `}
                     </div>
                 ` : `
-                    <div class="mt-2 bg-[#0D1117] p-4 rounded-xl border border-white/10">
-                        <div class="flex justify-center items-center gap-3 py-2">
-                            <span class="text-right w-5/12 text-lg font-bold ${p.resultado_ganador === p.equipo_local ? 'text-[#00FF87]' : 'text-[#8B949E]'}">${localInfo.flag} ${localInfo.es}</span>
-                            <span class="text-white font-black text-3xl w-2/12 text-center">${p.goles_local ?? '-'} <span class="text-[#8B949E]" style="font-size:1.1rem">-</span> ${p.goles_visitante ?? '-'}</span>
-                            <span class="text-left w-5/12 text-lg font-bold ${p.resultado_ganador === p.equipo_visitante ? 'text-[#00FF87]' : 'text-[#8B949E]'}">${visitInfo.flag} ${visitInfo.es}</span>
-                        </div>
-                        ${p.forma_victoria ? `<p class="text-xs text-center text-[#8A2BE2] font-semibold uppercase tracking-widest mt-1">Definido en ${getFormaVictoriaText(p.forma_victoria)}</p>` : ''}
-                        <div class="mt-3 pt-3 border-t border-white/5 text-center">
+                    <!-- Layout responsivo para tarjetas FINALIZADAS -->
+                    <div class="mt-4 bg-[#0D1117] p-3 md:p-4 rounded-xl border border-white/10">
+                        ${p.forma_victoria ? `<p class="text-[10px] md:text-xs text-center text-[#8A2BE2] font-semibold uppercase tracking-widest mb-2">Definido en ${getFormaVictoriaText(p.forma_victoria)}</p>` : ''}
+                        
+                        <div class="mt-2 pt-2 border-t border-white/5 text-center">
                         ${pred ? `
-                            <p class="text-sm font-medium ${(pred.ganador === p.resultado_ganador && pred.forma === p.forma_victoria) ? 'text-[#00FF87]' : 'text-red-400'}">
-                                ${(pred.ganador === p.resultado_ganador && pred.forma === p.forma_victoria) ? '✅' : '❌'} Tú votaste: ${getCountry(pred.ganador).es} en ${getFormaVictoriaText(pred.forma)}
+                            <p class="text-xs md:text-sm font-medium ${(pred.ganador === p.resultado_ganador) ? 'text-[#00FF87]' : 'text-red-400'}">
+                                ${(pred.ganador === p.resultado_ganador) ? '✅' : '❌'} Tú votaste: ${getCountry(pred.ganador).es} (${getFormaVictoriaText(pred.forma)})
                             </p>
-                        ` : `<p class="text-sm text-[#8B949E]">No participaste en este partido</p>`}
+                        ` : `<p class="text-xs text-[#8B949E]">No participaste en este partido</p>`}
                         </div>
                     </div>
                 `}
@@ -353,19 +396,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const winnerInfo = getCountry(ganador);
         
         container.innerHTML = `
-            <p class="text-xs text-[#8B949E] text-center mb-3 font-medium">¿Cómo ganará ${winnerInfo.es}?</p>
+            <p class="text-[11px] md:text-xs text-[#8B949E] text-center mb-2 font-medium">¿Cómo ganará ${winnerInfo.es}?</p>
+            <p class="text-[10px] text-[#00FF87]/80 text-center mb-3">Solo decoración. Los puntos se asignan según cómo termine el partido real.</p>
             <div class="grid grid-cols-1 gap-2 mb-2">
-                <button onclick="window.votar(${partidoId}, '${ganador}', 'regular')" class="vote-btn w-full !py-2 flex justify-between px-4">
-                    <span>⏱️ 90 Minutos</span> <span class="text-[#8B949E] font-normal">Da 1 punto</span>
+                <button onclick="window.votar(${partidoId}, '${ganador}', 'regular')" class="vote-btn w-full !py-2 text-sm">
+                    ⏱️ 90 Minutos
                 </button>
-                <button onclick="window.votar(${partidoId}, '${ganador}', 'prorroga')" class="vote-btn w-full !py-2 flex justify-between px-4">
-                    <span>⏳ Prórroga</span> <span class="text-[#8B949E] font-normal">Da 2 puntos</span>
+                <button onclick="window.votar(${partidoId}, '${ganador}', 'prorroga')" class="vote-btn w-full !py-2 text-sm">
+                    ⏳ Prórroga
                 </button>
-                <button onclick="window.votar(${partidoId}, '${ganador}', 'penales')" class="vote-btn w-full !py-2 flex justify-between px-4 text-[#8A2BE2] hover:text-white border-[#8A2BE2]/50 hover:bg-[#8A2BE2]">
-                    <span>🎯 Penales</span> <span class="opacity-70 font-normal">Da 3 puntos</span>
+                <button onclick="window.votar(${partidoId}, '${ganador}', 'penales')" class="vote-btn w-full !py-2 text-[#8A2BE2] hover:text-white border-[#8A2BE2]/50 hover:bg-[#8A2BE2] text-sm">
+                    🎯 Penales
                 </button>
             </div>
-            <button onclick="window.cancelarVoto()" class="text-xs text-[#8B949E] hover:text-white w-full text-center">← Cancelar y elegir otro equipo</button>
+            <button onclick="window.cancelarVoto()" class="text-xs text-[#8B949E] hover:text-white w-full text-center mt-2">← Cancelar y elegir otro</button>
         `;
     };
 

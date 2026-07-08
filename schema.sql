@@ -102,14 +102,15 @@ BEGIN
     SELECT 
         p.id AS usuario_id,
         p.nombre AS nombre_jugador,
-        COALESCE(SUM(CASE WHEN pa.id = 1 AND pr.prediccion_ganador = pa.resultado_ganador AND pr.prediccion_forma_victoria = pa.forma_victoria THEN 1 ELSE 0 END), 0)::INT AS aciertos_m1,
-        COALESCE(SUM(CASE WHEN pa.id = 2 AND pr.prediccion_ganador = pa.resultado_ganador AND pr.prediccion_forma_victoria = pa.forma_victoria THEN 1 ELSE 0 END), 0)::INT AS aciertos_m2,
-        COALESCE(SUM(CASE WHEN pa.id = 3 AND pr.prediccion_ganador = pa.resultado_ganador AND pr.prediccion_forma_victoria = pa.forma_victoria THEN 1 ELSE 0 END), 0)::INT AS aciertos_m3,
-        COALESCE(SUM(CASE WHEN pa.id = 4 AND pr.prediccion_ganador = pa.resultado_ganador AND pr.prediccion_forma_victoria = pa.forma_victoria THEN 1 ELSE 0 END), 0)::INT AS aciertos_m4,
-        -- Sumatoria dinámica: SOLO suma si acertó ganador y forma de victoria
+        COALESCE(SUM(CASE WHEN pa.id = 1 AND pr.prediccion_ganador = pa.resultado_ganador THEN 1 ELSE 0 END), 0)::INT AS aciertos_m1,
+        COALESCE(SUM(CASE WHEN pa.id = 2 AND pr.prediccion_ganador = pa.resultado_ganador THEN 1 ELSE 0 END), 0)::INT AS aciertos_m2,
+        COALESCE(SUM(CASE WHEN pa.id = 3 AND pr.prediccion_ganador = pa.resultado_ganador THEN 1 ELSE 0 END), 0)::INT AS aciertos_m3,
+        COALESCE(SUM(CASE WHEN pa.id = 4 AND pr.prediccion_ganador = pa.resultado_ganador THEN 1 ELSE 0 END), 0)::INT AS aciertos_m4,
+        -- Sumatoria dinámica: suma puntos basados en cómo terminó el partido (1 normal, 2 prorroga, 3 penales)
+        -- SOLO se dan los puntos si el usuario acertó el GANADOR del partido.
         COALESCE(SUM(
             CASE 
-                WHEN pr.prediccion_ganador = pa.resultado_ganador AND pr.prediccion_forma_victoria = pa.forma_victoria THEN 
+                WHEN pr.prediccion_ganador = pa.resultado_ganador THEN 
                     CASE 
                         WHEN pa.forma_victoria = 'regular' THEN 1
                         WHEN pa.forma_victoria = 'prorroga' THEN 2

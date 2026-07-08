@@ -25,6 +25,28 @@ export function exportLeaderboard(data) {
     const workbook = window.XLSX.utils.book_new();
     window.XLSX.utils.book_append_sheet(workbook, worksheet, "Leaderboard");
     
-    // Generar archivo y descargar
+// Generar archivo y descargar
     window.XLSX.writeFile(workbook, "LigaCigarra_Resultados.xlsx");
+}
+
+export function exportVotaciones(data) {
+    if (!data || data.length === 0) {
+        alert("No hay votaciones para exportar.");
+        return;
+    }
+
+    const excelData = data.map((row) => {
+        return {
+            "Participante": row.perfiles?.nombre || "Desconocido",
+            "Partido": `${row.partidos?.equipo_local} vs ${row.partidos?.equipo_visitante}`,
+            "Predicción Ganador": row.prediccion_ganador,
+            "Forma de Victoria": row.prediccion_forma_victoria
+        };
+    });
+
+    const worksheet = window.XLSX.utils.json_to_sheet(excelData);
+    const workbook = window.XLSX.utils.book_new();
+    window.XLSX.utils.book_append_sheet(workbook, worksheet, "Votaciones");
+    
+    window.XLSX.writeFile(workbook, "LigaCigarra_Votaciones.xlsx");
 }
