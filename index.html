@@ -23,10 +23,10 @@
         }
     </script>
 </head>
-<body class="antialiased min-h-screen flex flex-col">
+<body class="antialiased min-h-screen flex flex-col overflow-x-hidden">
 
     <!-- Navbar con Logo -->
-    <nav class="sticky top-0 z-50 apple-glass border-b border-white/10 px-4 py-4 mb-8">
+    <nav class="sticky top-0 z-50 apple-glass border-b border-white/10 px-4 py-4 mb-8 w-full">
         <div class="max-w-5xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
                 <img src="./IMAGES/images.png" alt="Logo Liga Cigarra" class="nav-logo">
@@ -39,7 +39,7 @@
         </div>
     </nav>
 
-    <div class="max-w-5xl mx-auto px-4 flex-1 pb-10" id="app-container">
+    <div class="w-full max-w-5xl mx-auto px-4 flex-1 pb-10" id="app-container">
         
         <!-- Auth View -->
         <div id="auth-view" class="max-w-sm mx-auto mt-24 apple-card p-10 hidden">
