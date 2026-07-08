@@ -360,14 +360,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="mt-4" id="vote-container-${p.id}">
                         ${pred ? `
                             <div class="bg-[#00FF87]/10 text-[#00FF87] border border-[#00FF87]/30 p-3 rounded-xl text-center text-xs md:text-sm shadow-[0_0_15px_rgba(0,255,135,0.1)]">
-                                Tu voto: <span class="font-bold text-white">${getCountry(pred.ganador).es}</span> en <span class="font-bold">${getFormaVictoriaText(pred.forma)}</span>
+                                Tu voto: <span class="font-bold text-white">${getCountry(pred.ganador).es}</span>
                                 <p class="text-[#8B949E] text-[10px] mt-1">(Ley del Muletto: Bloqueado)</p>
                             </div>
                         ` : `
                             <p class="text-[11px] md:text-xs text-[#8B949E] text-center mb-3 font-medium">Elige al ganador de este encuentro</p>
                             <div class="flex gap-2">
-                                <button onclick="window.elegirGanador(${p.id}, '${p.equipo_local}')" class="vote-btn flex-1 truncate text-xs md:text-sm py-2 px-1">${localInfo.es}</button>
-                                <button onclick="window.elegirGanador(${p.id}, '${p.equipo_visitante}')" class="vote-btn flex-1 truncate text-xs md:text-sm py-2 px-1">${visitInfo.es}</button>
+                                <button onclick="window.votar(${p.id}, '${p.equipo_local}', null)" class="vote-btn flex-1 truncate text-xs md:text-sm py-2 px-1">${localInfo.es}</button>
+                                <button onclick="window.votar(${p.id}, '${p.equipo_visitante}', null)" class="vote-btn flex-1 truncate text-xs md:text-sm py-2 px-1">${visitInfo.es}</button>
                             </div>
                         `}
                     </div>
@@ -379,7 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="mt-2 pt-2 border-t border-white/5 text-center">
                         ${pred ? `
                             <p class="text-xs md:text-sm font-medium ${(pred.ganador === p.resultado_ganador) ? 'text-[#00FF87]' : 'text-red-400'}">
-                                ${(pred.ganador === p.resultado_ganador) ? '✅' : '❌'} Tú votaste: ${getCountry(pred.ganador).es} (${getFormaVictoriaText(pred.forma)})
+                                ${(pred.ganador === p.resultado_ganador) ? '✅' : '❌'} Tú votaste: ${getCountry(pred.ganador).es}
                             </p>
                         ` : `<p class="text-xs text-[#8B949E]">No participaste en este partido</p>`}
                         </div>
@@ -390,32 +390,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Funciones globales para manejar el flujo de votación en dos pasos
-    window.elegirGanador = (partidoId, ganador) => {
-        const container = document.getElementById(`vote-container-${partidoId}`);
-        const winnerInfo = getCountry(ganador);
-        
-        container.innerHTML = `
-            <p class="text-[11px] md:text-xs text-[#8B949E] text-center mb-2 font-medium">¿Cómo ganará ${winnerInfo.es}?</p>
-            <p class="text-[10px] text-[#00FF87]/80 text-center mb-3">Solo decoración. Los puntos se asignan según cómo termine el partido real.</p>
-            <div class="grid grid-cols-1 gap-2 mb-2">
-                <button onclick="window.votar(${partidoId}, '${ganador}', 'regular')" class="vote-btn w-full !py-2 text-sm">
-                    ⏱️ 90 Minutos
-                </button>
-                <button onclick="window.votar(${partidoId}, '${ganador}', 'prorroga')" class="vote-btn w-full !py-2 text-sm">
-                    ⏳ Prórroga
-                </button>
-                <button onclick="window.votar(${partidoId}, '${ganador}', 'penales')" class="vote-btn w-full !py-2 text-[#8A2BE2] hover:text-white border-[#8A2BE2]/50 hover:bg-[#8A2BE2] text-sm">
-                    🎯 Penales
-                </button>
-            </div>
-            <button onclick="window.cancelarVoto()" class="text-xs text-[#8B949E] hover:text-white w-full text-center mt-2">← Cancelar y elegir otro</button>
-        `;
-    };
+    // Funciones globales para manejar el flujo de votación
 
-    window.cancelarVoto = () => {
-        loadPartidos(); // Simplemente recarga para reiniciar el estado UI
-    };
 
     window.votar = async (partido_id, prediccion_ganador, prediccion_forma) => {
         if (!currentUserId) return;
